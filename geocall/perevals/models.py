@@ -27,8 +27,19 @@ class Levels(models.Model):
     spring = models.CharField(choices=levels)
 
 
+statuses = {'new': 'new', 'pending': 'pending', 'accepted': 'accepted', 'rejected': 'rejected', }
+
+
 class Pereval(models.Model):
-    date_added = models.DateTimeField()
+    add_time = models.DateTimeField()
+    beauty_title = models.CharField(max_length=30)
+    title = models.CharField(max_length=60)
+    other_titles = models.CharField(max_length=60)
+    connect = models.CharField(max_length=60)
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    coords = models.ForeignKey(Coords, on_delete=models.CASCADE)
+    levels = models.ForeignKey(Levels, on_delete=models.CASCADE)
+    status = models.CharField(choices=statuses)
 
 
 class Images(models.Model):
