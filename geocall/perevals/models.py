@@ -4,7 +4,7 @@ from django.db import models
 
 
 class PUser(models.Model):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     fam = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     otc = models.CharField(max_length=50)
@@ -43,6 +43,6 @@ class Pereval(models.Model):
 
 
 class Images(models.Model):
-    image = models.ImageField()
+    image = models.URLField()
     title = models.CharField(max_length=250)
     per = models.ForeignKey(Pereval, on_delete=models.CASCADE)
