@@ -39,7 +39,7 @@ class Pereval(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     coords = models.ForeignKey(Coords, on_delete=models.CASCADE)
     levels = models.ForeignKey(Levels, on_delete=models.CASCADE)
-    status = models.CharField(choices=statuses)
+    status = models.CharField(choices=statuses, default='new')
 
 
 class Images(models.Model):

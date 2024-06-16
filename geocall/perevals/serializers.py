@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 from .models import *
 
 
@@ -22,20 +23,6 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = ('image', 'title', )
 
 
-class PerevalSerializer(serializers.ModelSerializer):  # drf writable nested
-    class Meta:
-        model = Pereval
-        fields = ('add_time',
-                  'beauty_title',
-                  'title',
-                  'other_titles',
-                  'connect',
-                  'user',
-                  'coords',
-                  'levels',
-                  'status',
-                  )
-
 
 class PUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,4 +32,27 @@ class PUserSerializer(serializers.ModelSerializer):
                   'name',
                   'otc',
                   'phone',
+                  )
+
+
+class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
+    user = PUserSerializer()
+    coords = CoordsSerializer()
+    level = LevelsSerializer()
+    images = ImagesSerializer()
+
+    class Meta:
+        model = Pereval
+        depth = 1
+        fields = ('id',
+                  'add_time',
+                  'beauty_title',
+                  'title',
+                  'other_titles',
+                  'connect',
+                  'user',
+                  'coords',
+                  'levels',
+                  'status',
+                  'images',
                   )
