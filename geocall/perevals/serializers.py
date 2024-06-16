@@ -56,3 +56,21 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
                   'status',
                   'images',
                   )
+
+    def create(self, validated_data):
+        user = validated_data.pop('user')
+        coords = validated_data.pop('coords')
+        level = validated_data.pop('levels')
+        images = validated_data.pop('images')
+
+        user, created = PUser.objects.get_or_create(**user)
+        coords = Coords.objects.create(**coords)
+        level = Levels.objects.create(**level)
+        pereval = Pereval.objects.create(**validated_data, user=user, coords=coords, levels=level, status='new')
+        for image in images:
+            data = image.pop('image')
+            title = image.pop('title')
+            Images.objects.create(image=data, title=title, per=pereval)
+
+        return pereval
+
