@@ -35,6 +35,7 @@ class PerevalViewSet(viewsets.ModelViewSet):
                 'message': None,
                 'id': serializer.data['id'],
             })
+        print(serializer.errors)
         if status.HTTP_400_BAD_REQUEST:
             return response.Response({
                 'status': status.HTTP_400_BAD_REQUEST,
@@ -51,4 +52,4 @@ class PerevalViewSet(viewsets.ModelViewSet):
 
 class PUserViewSet(viewsets.ModelViewSet):
     queryset = PUser.objects.all()
-    serializer_class = CoordsSerializer
+    serializer_class = PUserSerializer

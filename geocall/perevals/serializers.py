@@ -23,7 +23,6 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = ('image', 'title', )
 
 
-
 class PUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = PUser
@@ -38,23 +37,24 @@ class PUserSerializer(serializers.ModelSerializer):
 class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
     user = PUserSerializer()
     coords = CoordsSerializer()
-    level = LevelsSerializer()
-    images = ImagesSerializer()
+    levels = LevelsSerializer()
+    images = ImagesSerializer(many=True)
+    status = serializers.CharField(read_only=True)
 
     class Meta:
         model = Pereval
         depth = 1
         fields = ('id',
-                  'add_time',
                   'beauty_title',
                   'title',
                   'other_titles',
                   'connect',
+                  'add_time',
                   'user',
                   'coords',
                   'levels',
-                  'status',
                   'images',
+                  'status',
                   )
 
     def create(self, validated_data):
