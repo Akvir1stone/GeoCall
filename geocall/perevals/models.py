@@ -49,4 +49,5 @@ class Pereval(models.Model):
 class Images(models.Model):
     image = models.URLField()
     title = models.CharField(max_length=250)
+    add_time = models.DateTimeField(auto_now_add=True)
     per = models.ForeignKey(Pereval, on_delete=models.CASCADE)
