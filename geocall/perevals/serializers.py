@@ -6,13 +6,13 @@ from .models import *
 class CoordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coords
-        fields = ('latitude', 'longitude', 'height', )
+        fields = ('latitude', 'longitude', 'height',)
 
 
 class LevelsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Levels
-        fields = ('winter', 'summer', 'autumn', 'spring', )
+        fields = ('winter', 'summer', 'autumn', 'spring',)
 
 
 class ImagesSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
-        fields = ('image', 'title', )
+        fields = ('image', 'title',)
 
 
 class PUserSerializer(serializers.ModelSerializer):
@@ -64,6 +64,7 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
         images = validated_data.pop('images')
 
         user, created = PUser.objects.get_or_create(**user)
+
         coords = Coords.objects.create(**coords)
         level = Levels.objects.create(**level)
         pereval = Pereval.objects.create(**validated_data, user=user, coords=coords, levels=level, status='new')
@@ -74,3 +75,18 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
 
         return pereval
 
+    # def update(self, instance, validated_data):
+
+
+    def validate(self, data):
+        if self.instance is not None:
+            ins_user = self.instance.user
+            data_user = data.get('user')
+            if data_user is not None:
+                if (ins_user.email != data_user['email'] or
+                        ins_user.fam != data_user['fam'] or
+                        ins_user.name != data_user['name'] or
+                        ins_user.otc != data_user['otc'] or
+                        ins_user.phone != data_user['phone']):
+                    raise serializers.ValidationError({'Error': 'User data cannot be changed'})
+        return data

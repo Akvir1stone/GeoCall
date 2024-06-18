@@ -40,7 +40,7 @@ class Pereval(models.Model):
     title = models.CharField(max_length=60)
     other_titles = models.CharField(max_length=60, null=True, blank=True)
     connect = models.CharField(max_length=200, null=True, blank=True)
-    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE, related_name='user')
     coords = models.ForeignKey(Coords, on_delete=models.CASCADE, null=True, blank=True)
     levels = models.ForeignKey(Levels, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(choices=statuses)
