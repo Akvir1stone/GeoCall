@@ -91,23 +91,3 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
                     raise serializers.ValidationError({'Error': 'User data cannot be changed'})
         return validated_data
 
-        # user_data = data.pop('user', None)  # Extract user data if present
-        #
-        # # Validate parent model fields (excluding user)
-        # validated_data = super().validate(data)
-        #
-        # if user_data is not None:
-        #     # Check if user data actually needs update
-        #     ins_user = self.instance.user if self.instance else None
-        #     if ins_user and (user_data['email'] != ins_user.email or
-        #                      user_data['fam'] != ins_user.fam or
-        #                      user_data['name'] != ins_user.name or
-        #                      user_data['otc'] != ins_user.otc or
-        #                      user_data['phone'] != ins_user.phone):
-        #         raise serializers.ValidationError({'Error': 'User data cannot be changed'})
-        #
-        #     # Update user data if necessary (outside of validation)
-        #     validated_data['user'] = user_data
-        #
-        # return validated_data
-
