@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, response, status
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import *
 
@@ -24,6 +25,7 @@ class ImagesViewSet(viewsets.ModelViewSet):
 class PerevalViewSet(viewsets.ModelViewSet):
     queryset = Pereval.objects.all()
     serializer_class = PerevalSerializer
+    filter_backends = [DjangoFilterBackend]
     filterset_fields = ('user__email', )
 
     def create(self, request, *args, **kwargs):
