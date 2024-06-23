@@ -79,7 +79,6 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
     # def update(self, instance, validated_data):
     def validate(self, data):
         if self.instance is not None:
-            validated_data = super().validate(data)
             ins_user = self.instance.user
             data_user = data.get('user')
             if data_user is not None:
@@ -89,5 +88,5 @@ class PerevalSerializer(WritableNestedModelSerializer):  # drf writable nested
                         ins_user.otc != data_user['otc'] or
                         ins_user.phone != data_user['phone']):
                     raise serializers.ValidationError({'Error': 'User data cannot be changed'})
-        return validated_data
+        return data
 
