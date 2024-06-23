@@ -1,7 +1,7 @@
 from django.shortcuts import render
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, response, status
 from django_filters.rest_framework import DjangoFilterBackend
-
 from .serializers import *
 
 # Create your views here.
@@ -71,6 +71,14 @@ class PerevalViewSet(viewsets.ModelViewSet):
                 'state': '0',
                 'message': f'Error, {pereval.get_status_display()}'
             })
+
+    @swagger_auto_schema(auto_schema=None)
+    def update(self, request, *args, **kwargs):
+        pass
+
+    @swagger_auto_schema(auto_schema=None)
+    def destroy(self, request, *args, **kwargs):
+        pass
 
 
 class PUserViewSet(viewsets.ModelViewSet):

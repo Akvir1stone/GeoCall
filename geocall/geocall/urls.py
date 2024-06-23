@@ -18,13 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from perevals.views import *
 from rest_framework import routers
+from .yasg import urlpatterns as swagger_url
 
 router = routers.DefaultRouter()
 router.register('Pereval', PerevalViewSet, basename='pereval')
-router.register('User', PUserViewSet, basename='user')
+# router.register('User', PUserViewSet, basename='user')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls))
 ]
+
+urlpatterns += swagger_url
