@@ -60,6 +60,123 @@ class PerevalAPITests(APITestCase):
         self.assertEquals(response.data, serializer_data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
+    def test_post(self):
+        url = reverse('pereval-list')
+        data = {
+            "beauty_title": "qwe",
+            "title": "qew",
+            "other_titles": "qwe",
+            "connect": "qwe",
+            "user": {
+                "email": "qwe@qwe.qwe",
+                "fam": "qwe",
+                "name": "qwe",
+                "otc": "qwe",
+                "phone": "1234"
+            },
+            "coords": {
+                "latitude": 13234,
+                "longitude": 1341243,
+                "height": 134
+            },
+            "levels": {
+                "winter": "lvl1",
+                "summer": None,
+                "autumn": None,
+                "spring": None
+            },
+            "images": [
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic"
+                },
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic2"
+                }
+            ]
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+    def test_patch(self):
+        url = reverse('pereval-detail', args=(self.pereval1.id, ))
+        data = {
+            "beauty_title": "aaa",
+            "title": "aaa",
+            "other_titles": None,
+            "connect": None,
+            "user": {
+                "email": "ddd@ddd.ddd",
+                "fam": "ddd",
+                "name": "ddd",
+                "otc": "ddd",
+                "phone": 143324
+            },
+            "coords": {
+                "latitude": 13234,
+                "longitude": 1341243,
+                "height": 134
+            },
+            "levels": {
+                "winter": "lvl1",
+                "summer": None,
+                "autumn": None,
+                "spring": None
+            },
+            "images": [
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic"
+                },
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic2"
+                }
+            ]
+        }
+        response = self.client.patch(url, data, format='json')
+        self.assertEquals(response.data, {'state': '1', 'message': 'Post changed'})
+
+    def test_wrong_patch(self):
+        url = reverse('pereval-detail', args=(self.pereval1.id, ))
+        data = {
+            "beauty_title": "aaa",
+            "title": "aaa",
+            "other_titles": None,
+            "connect": None,
+            "user": {
+                "email": "dsdd@ddd.ddd",
+                "fam": "ddd",
+                "name": "ddd",
+                "otc": "ddd",
+                "phone": 143324
+            },
+            "coords": {
+                "latitude": 13234,
+                "longitude": 1341243,
+                "height": 134
+            },
+            "levels": {
+                "winter": "lvl1",
+                "summer": None,
+                "autumn": None,
+                "spring": None
+            },
+            "images": [
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic"
+                },
+                {
+                    "image": "https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg",
+                    "title": "pic2"
+                }
+            ]
+        }
+        response = self.client.patch(url, data, format='json')
+        self.assertEquals(response.data, {'state': '0', 'message': {'Error': ['User data cannot be changed']}})
+
 
 class SerializersTests(TestCase):
     def setUp(self):
@@ -98,7 +215,7 @@ class SerializersTests(TestCase):
         ]
         self.assertEquals(serializer_data, expected_data)
 
-    def test_coords_levels(self):
+    def test_levels_serializer(self):
         serializer_data = LevelsSerializer([self.levels1, self.levels2], many=True).data
         expected_data = [
             {'winter': 'lvl1', 'summer': 'lvl1', 'autumn': 'lvl1', 'spring': 'lvl1', 'id': self.levels1.id},
@@ -106,7 +223,7 @@ class SerializersTests(TestCase):
         ]
         self.assertEquals(serializer_data, expected_data)
 
-    def test_coords_images(self):
+    def test_images_serializer(self):
         serializer_data = ImagesSerializer(self.image).data
         expected_data = {
             'image': 'https://hips.hearstapps.com/hmg-prod/images/ama-dablam-mountain-peak-view-from-chola-pass-royalty-free-image-1623254695.jpg',
@@ -115,7 +232,7 @@ class SerializersTests(TestCase):
         }
         self.assertEquals(serializer_data, expected_data)
 
-    def test_coords_users(self):
+    def test_users_serializer(self):
         serializer_data = PUserSerializer([self.user1, self.user2], many=True).data
         expected_data = [
             {'email': 'ddd@ddd.ddd', 'fam': 'ddd', 'name': 'ddd', 'otc': 'ddd', 'phone': '143324', 'id': self.user1.id},
@@ -123,11 +240,11 @@ class SerializersTests(TestCase):
         ]
         self.assertEquals(serializer_data, expected_data)
 
-    def test_coords_perevals(self):
+    def test_perevals_serializer(self):
         serializer_data = PerevalSerializer([self.pereval1, self.pereval2, self.pereval_pending], many=True).data
         expected_data = [
             {
-                'id': 16,
+                'id': PerevalSerializer(self.pereval1).data['id'],
                 'beauty_title': 'aaa',
                 'title': 'aaa',
                 'other_titles': None,
@@ -140,7 +257,7 @@ class SerializersTests(TestCase):
                 'status': 'new'
             },
             {
-                'id': 17,
+                'id': PerevalSerializer(self.pereval2).data['id'],
                 'beauty_title': 'bbb',
                 'title': 'bbb',
                 'other_titles': None,
@@ -153,7 +270,7 @@ class SerializersTests(TestCase):
                 'status': 'new'
             },
             {
-                'id': 18,
+                'id': PerevalSerializer(self.pereval_pending).data['id'],
                 'beauty_title': 'aaa',
                 'title': 'aaa',
                 'other_titles': None,
