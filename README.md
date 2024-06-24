@@ -51,20 +51,20 @@ Along with main task there was several additional tasks such as:
     }]
     }
     ```
-  * **GET** method that retuns list of all existing objects
+  * **GET** method that returns list of all existing objects
     ```
     GET /Pereval/
     ```
-  * **GET** method that retuns list of all objects that was created by user with email = `<email>`
+  * **GET** method that returns list of all objects that was created by user with email = `<email>`
     ```
     GET /Pereval/?user__email=<email>
     ```
-  * **GET** method that retuns object with id = `<id>`
+  * **GET** method that returns object with id = `<id>`
     ```
     GET /Pereval/<id>
     ```
   ----
-  * More detailed documentation created by swagger is availavle on [*pythonanywhere*](https://akvir.pythonanywhere.com/swagger)
+  * More detailed documentation created by swagger is available on [*pythonanywhere*](https://akvir.pythonanywhere.com/swagger)
 * Database was optimized
 * Used **dotenv** for storing secret data in environmental variables
 * Deployed project on [*pythonanywhere*](https://akvir.pythonanywhere.com/) service
